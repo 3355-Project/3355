@@ -2,8 +2,11 @@ package com.example.project3355.user.controller;
 
 import com.example.project3355.global.common.CommonResponseDto;
 import com.example.project3355.global.exception.common.BusinessException;
+import com.example.project3355.global.jwt.JwtUtil;
+import com.example.project3355.user.dto.UserLoginRequestDto;
 import com.example.project3355.user.dto.UserSignupRequestDto;
 import com.example.project3355.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ public class UserController {
 
   private final UserService userService;
 
+  private final JwtUtil jwtUtil;
+
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
     try {
@@ -32,4 +37,20 @@ public class UserController {
     }
   }
 
+  @PostMapping("/login")
+  public ResponseEntity<?> login(
+      @RequestBody UserLoginRequestDto requestDto, HttpServletResponse response) {
+    try {
+      userService.login(requestDto);
+    } catch (BusinessException be) {
+      return ResponseEntity.status(be.getStatus())
+          .body(new CommonResponseDto(be.getMessage(), be.getStatus()));
+    }
+
+    // 로그인 시 헤더에 JWT 토큰이 보임
+    response.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(requestDto.getUsername()));
+
+    return ResponseEntity.ok()
+        .body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
+  }
 }

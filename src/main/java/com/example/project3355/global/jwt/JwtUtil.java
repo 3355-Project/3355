@@ -15,7 +15,6 @@ import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.security.Signature;
 import java.util.Base64;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;

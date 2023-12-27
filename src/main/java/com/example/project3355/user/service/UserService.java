@@ -2,6 +2,8 @@ package com.example.project3355.user.service;
 
 import com.example.project3355.global.exception.user.AlreadyExistUserException;
 import com.example.project3355.global.exception.user.PasswordMismatchException;
+import com.example.project3355.global.exception.user.UserNotFoundException;
+import com.example.project3355.user.dto.UserLoginRequestDto;
 import com.example.project3355.user.dto.UserSignupRequestDto;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.user.repository.UserRepository;
@@ -41,5 +43,18 @@ public class UserService {
 
     User user = new User(username, encodePassword, email, introduce);
     userRepository.save(user);
+  }
+
+  public void login(UserLoginRequestDto requestDto) {
+    String username = requestDto.getUsername();
+    String password = requestDto.getPassword();
+
+    // 저장된 회원이 없는 경우
+    User user = userRepository.findByUsername(username)
+        .orElseThrow(UserNotFoundException::new);
+
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+      throw new UserNotFoundException();
+    }
   }
 }
