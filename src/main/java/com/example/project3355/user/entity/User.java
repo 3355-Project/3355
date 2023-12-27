@@ -38,8 +38,10 @@ public class User {
   @Column
   private String introduce;
 
-  public User(String username, String password) {
+  public User(String username, String password, String email, String introduce) {
     this.username = username;
     this.password = password;
+    this.email = email;
+    this.introduce = introduce;
   }
 }

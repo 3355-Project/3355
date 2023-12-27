@@ -13,7 +13,6 @@ public enum ErrorCode {
 
   // user
   PASSWORD_MISMATCH_EXCEPTION(401, "회원가입 실패 - 비밀번호와 비밀번호 확인이 불일치 합니다."),
-  PASSWORD_CONTAINS_USERNAME_EXCEPTION(401, "회원가입 실패 - 비밀번호에 닉네임과 같은 값이 포함되었습니다."),
   ALREADY_EXIST_MEMBER_EXCEPTION(401, "중복된 유저네임입니다."),
   USER_NOT_FOUND_EXCEPTION(401, "로그인 실패 - 유저네임 또는 패스워드를 확인해주세요"),
   AUTHENTICATION_MISMATCH_EXCEPTION(401, "수정 및 삭제 권한이 없습니다.");
