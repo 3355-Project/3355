@@ -1,6 +1,6 @@
 package com.example.project3355.coulmn;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

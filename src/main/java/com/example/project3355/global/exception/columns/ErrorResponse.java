@@ -1,8 +1,9 @@
-package com.example.project3355.coulmn.global.dto;
+package com.example.project3355.global.exception.columns;
 
 
 
-import com.example.project3355.coulmn.global.constant.ErrorCode;
+
+import com.example.project3355.global.exception.common.ErrorCode;
 import lombok.Data;
 import lombok.Generated;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class ErrorResponse {
     private String message;
 
     public ErrorResponse(ErrorCode errorCode){
-        this.status = errorCode.getHttpStatus().value();
+        this.status = errorCode.getStatus();
         this.message = errorCode.getMessage();
     }
     public ErrorResponse(int status, String message) {

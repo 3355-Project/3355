@@ -1,12 +1,14 @@
 package com.example.project3355.coulmn;
 
-import static com.example.project3355.coulmn.global.constant.ResponseCode.SUCCESS_COLUMNS;
-import static com.example.project3355.coulmn.global.constant.ResponseCode.SUCCESS_COLUMNS_DELETE;
-import static com.example.project3355.coulmn.global.constant.ResponseCode.SUCCESS_COLUMNS_SEQUENCE;
-import static com.example.project3355.coulmn.global.constant.ResponseCode.SUCCESS_COLUMNS_UPDATE;
 
 
-import com.example.project3355.coulmn.global.dto.SuccessResponse;
+
+import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS;
+import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_DELETE;
+import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_SEQUENCE;
+import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_UPDATE;
+
+import com.example.project3355.global.exception.columns.SuccessResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

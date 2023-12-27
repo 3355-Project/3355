@@ -1,6 +1,7 @@
 package com.example.project3355.global.exception.common;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
@@ -16,11 +17,12 @@ public enum ErrorCode {
   ALREADY_EXIST_USERNAME_EXCEPTION(401, "중복된 유저네임입니다."),
   ALREADY_EXIST_EMAIL_EXCEPTION(401, "중복된 이메일입니다"),
   USER_NOT_FOUND_EXCEPTION(401, "존재하지 않는 유저입니다."),
-  AUTHENTICATION_MISMATCH_EXCEPTION(401, "수정 및 삭제 권한이 없습니다.");
+  AUTHENTICATION_MISMATCH_EXCEPTION(401, "수정 및 삭제 권한이 없습니다."),
 
   // board
 
   // coulmn
+  INVALID_COLUMNS(404,"일치하는 컬럼이 없어요");
 
   // card
 

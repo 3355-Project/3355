@@ -1,7 +1,8 @@
 package com.example.project3355.coulmn;
 
-import com.example.project3355.coulmn.global.constant.ErrorCode;
-import com.example.project3355.coulmn.global.exception.ApiException;
+
+import com.example.project3355.global.exception.columns.ApiException;
+import com.example.project3355.global.exception.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ public class ColumnsServiceImpl implements ColumnsService{
 
 
   public Columns findId(Long id){
-    Columns columns = columnsRepository.findById(id).orElseThrow(() -> new ApiException(ErrorCode.INVALID_COLUMNS));
+    Columns columns = columnsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("일치하는 컬럼이 없어요"));
     return columns;
   }
 

@@ -1,8 +1,9 @@
-package com.example.project3355.coulmn.global.exception;
+package com.example.project3355.global.exception.columns;
 
 
 
-import com.example.project3355.coulmn.global.constant.ErrorCode;
+
+import com.example.project3355.global.exception.common.ErrorCode;
 import lombok.Getter;
 
 @Getter

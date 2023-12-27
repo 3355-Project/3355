@@ -1,7 +1,6 @@
-package com.example.project3355.coulmn.global.dto;
+package com.example.project3355.global.exception.columns;
 
 
-import com.example.project3355.coulmn.global.constant.ResponseCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 

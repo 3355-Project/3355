@@ -1,4 +1,4 @@
-package com.example.project3355.coulmn.global.constant;
+package com.example.project3355.global.exception.columns;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
