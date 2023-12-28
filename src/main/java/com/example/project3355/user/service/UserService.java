@@ -2,10 +2,12 @@ package com.example.project3355.user.service;
 
 import com.example.project3355.global.exception.user.AlreadyExistEmailException;
 import com.example.project3355.global.exception.user.AlreadyExistUsernameException;
+import com.example.project3355.global.exception.user.AuthenticationMismatchException;
 import com.example.project3355.global.exception.user.PasswordMismatchException;
 import com.example.project3355.global.exception.user.UserNotFoundException;
 import com.example.project3355.user.dto.UserInfoResponseDto;
 import com.example.project3355.user.dto.UserLoginRequestDto;
+import com.example.project3355.user.dto.UserProfileUpdateRequestDto;
 import com.example.project3355.user.dto.UserSignupRequestDto;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.user.repository.UserRepository;
@@ -70,7 +72,23 @@ public class UserService {
     return new UserInfoResponseDto(user);
   }
 
+  @Transactional
+  public void updateProfile(
+      Long userId, UserProfileUpdateRequestDto requestDto, User loginUser) {
+
+    User user = getUser(userId);
+
+    // 로그인한 유저와 수정할 프로필의 유저가 일치하는지 확인
+    if (!loginUser.getUsername().equals(user.getUsername())) {
+      throw new AuthenticationMismatchException();
+    }
+
+    user.update(requestDto);
+  }
+
   public User getUser(Long userId) {
     return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
   }
+
+
 }
