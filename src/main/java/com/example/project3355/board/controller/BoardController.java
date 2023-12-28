@@ -90,27 +90,4 @@ public class BoardController {
         }
     }
 
-    // 초대
-    @PostMapping("/{boardId}/invite/{invitedUserId}")
-    public ResponseEntity<CommonResponseDto> inviteUserToBoard(@PathVariable Long boardId,
-                                                               @PathVariable Long invitedUserId,
-                                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails != null && userDetails.getUser() != null) {
-            Long userId = userDetails.getUser().getId();
-
-            // 여기서 게시물 소유자를 확인하여 초대를 허용합니다
-            Board board = boardService.findByBoard(boardId);
-            if (board.getUser().getId().equals(userId)) { // 게시물 소유자를 확인하는 부분 수정
-                if (userId.equals(invitedUserId)) {
-                    return ResponseEntity.badRequest().body(new CommonResponseDto("자기 자신을 초대할 수 없습니다.", HttpStatus.BAD_REQUEST.value()));
-                }
-                boardService.inviteUserToBoard(userDetails.getUser(), boardId, invitedUserId);
-                return ResponseEntity.ok().body(new CommonResponseDto("초대 완료되었습니다.", HttpStatus.OK.value()));
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new CommonResponseDto("게시물 소유자만 초대할 수 있습니다.", HttpStatus.FORBIDDEN.value()));
-            }
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponseDto("인증되지 않은 사용자입니다.", HttpStatus.UNAUTHORIZED.value()));
-    }
-
 }

@@ -4,16 +4,17 @@ package com.example.project3355.board.service;
 import com.example.project3355.board.dto.BoardRequestDto;
 import com.example.project3355.board.dto.BoardResponseDto;
 import com.example.project3355.board.entity.Board;
+import com.example.project3355.board.entity.UserBoard;
 import com.example.project3355.board.repository.BoardRepository;
+import com.example.project3355.board.repository.UserBoardRepository;
 import com.example.project3355.user.UserDetailsImpl;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 
 @Service
@@ -21,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final UserBoardRepository userBoardRepository;
 
     // 생성
     public BoardResponseDto createBoard(BoardRequestDto boardRequestDto, User user) {
@@ -59,6 +61,7 @@ public class BoardService {
         boardRepository.delete(board);
         return "삭제 성공";
     }
+
     private Board verifyUser(User user, Long boardId) {
         Board board = findBoardById(boardId);
         if(!board.getUser().getUsername().equals(user.getUsername())){
@@ -69,20 +72,31 @@ public class BoardService {
 
     //초대
     @Transactional
-    public void inviteUserToBoard(User user, Long boardId, Long invitedUserId) {
-        Board board = findByBoard(boardId);
+    public void inviteUserToBoard(Long userId, Long boardId, Long invitedUserId) {
+        Optional<Board> boardOptional = findByBoard(boardId);
+        if (boardOptional.isEmpty()) {
+            throw new IllegalArgumentException("보드를 찾을 수 없습니다.");
+        }
+        Board board = boardOptional.get();
+        // 본인 초대 불가
+        if (board.getOwner().getId().equals(invitedUserId)) {
+            throw new IllegalArgumentException("자기 자신을 초대할 수 없습니다.");
+        }
+        // 보드 소유자 확인
+        if (!board.getOwner().getId().equals(userId)) {
+            throw new IllegalArgumentException("보드 소유자만 초대할 수 있습니다.");
+        }
         User invitedUser = userRepository.findById(invitedUserId)
-                .orElseThrow(() -> new EntityNotFoundException("초대받은 유저를 찾을 수 없습니다."));
-        board.getUser().getUsername();
-        boardRepository.save(board);
-    }
-    public Board findByBoard(Long boardId) {
-        return boardRepository.findById(boardId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "Not found board"
-                ));
-    }
+                .orElseThrow(() -> new IllegalArgumentException("초대받은 유저를 찾을 수 없습니다."));
 
+        if (userBoardRepository.findByBoardIdAndUserId(boardId, invitedUserId).isPresent()) {
+            throw new IllegalArgumentException("이미 초대된 유저입니다.");
+        }
+        UserBoard userBoard = new UserBoard(board, invitedUser);
+        userBoardRepository.save(userBoard);
+    }
+    private Optional<Board> findByBoard(Long boardId) {
+        return boardRepository.findById(boardId);
+    }
 }
 

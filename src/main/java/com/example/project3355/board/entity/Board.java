@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Getter
 @NoArgsConstructor
@@ -17,6 +16,7 @@ public class Board extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     @Column(nullable = false)
     private String boardTitle;
@@ -30,25 +30,24 @@ public class Board extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+    public void setUser(User user) {
+        this.user = user;
+    }
     public Board(BoardRequestDto requestDto, User user) {
         this.user = user;
         this.boardTitle = requestDto.getBoardTitle();
         this.boardColor = requestDto.getBoardColor();
         this.boardDescription = requestDto.getBoardDescription();
     }
-    public void setUser(User user) {
-        this.user = user;
-    }
-    public void getUser(User user) {
-        this.user = user;
-    }
-
 
     public void update(BoardRequestDto boardRequestDto) {
-        this.boardTitle=boardRequestDto.getBoardTitle();
-        this.boardColor= boardRequestDto.getBoardColor();
-        this.boardDescription= boardRequestDto.getBoardDescription();
+        this.boardTitle = boardRequestDto.getBoardTitle();
+        this.boardColor = boardRequestDto.getBoardColor();
+        this.boardDescription = boardRequestDto.getBoardDescription();
     }
 
+    public User getOwner() {
+        return this.user;
+    }
 }
+
