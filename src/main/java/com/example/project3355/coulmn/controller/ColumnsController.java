@@ -1,4 +1,4 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.controller;
 
 
 
@@ -8,9 +8,14 @@ import static com.example.project3355.global.exception.columns.ResponseCode.SUCC
 import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_SEQUENCE;
 import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_UPDATE;
 
+import com.example.project3355.coulmn.dto.ColumnsRequestDto;
+import com.example.project3355.coulmn.dto.ColumnsResponseDto;
+import com.example.project3355.coulmn.service.ColumnsService;
 import com.example.project3355.global.exception.columns.SuccessResponse;
+import com.example.project3355.user.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,11 +32,12 @@ public class ColumnsController {
   private final ColumnsService columnsService;
 
 
-  @PostMapping("/{boardId}")
+  @PostMapping("/{boardId}/columns")
   public ResponseEntity<SuccessResponse> createColumns(
       @RequestBody ColumnsRequestDto columnsRequestDto,
-      @PathVariable Long boardId){
-    ColumnsResponseDto responseDto = columnsService.createColumns(columnsRequestDto,boardId);
+      @PathVariable Long boardId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails){
+    ColumnsResponseDto responseDto = columnsService.createColumns(columnsRequestDto,boardId,userDetails.getUser());
 
     return ResponseEntity.status(SUCCESS_COLUMNS.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS,responseDto));
 
@@ -40,22 +46,26 @@ public class ColumnsController {
   @PutMapping("/columns/{id}")
   public ResponseEntity<SuccessResponse> updateColumns(
       @RequestBody ColumnsRequestDto requestDto,
-      @PathVariable Long id){
-    ColumnsResponseDto responseDto = columnsService.updateColumns(requestDto,id);
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserDetailsImpl userDetails){
+    ColumnsResponseDto responseDto = columnsService.updateColumns(requestDto,id,userDetails.getUser());
 
     return ResponseEntity.status(SUCCESS_COLUMNS_UPDATE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS_UPDATE,responseDto));
   }
 
   @DeleteMapping("/columns/{id}")
   public ResponseEntity<SuccessResponse> deleteColumns(
-      @PathVariable Long id){
-    columnsService.deleteColumns(id);
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserDetailsImpl userDetails){
+    columnsService.deleteColumns(id,userDetails.getUser());
     return ResponseEntity.status(SUCCESS_COLUMNS_DELETE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS_DELETE));
   }
 
-  @PutMapping("/columns/{id}/{sequenceId}")
-  public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long id,@PathVariable Long sequenceId){
-    columnsService.sequenceColumns(id,sequenceId);
+  @PutMapping("/{boardId}/columns/{id}/{sequence}")
+  public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long boardId,
+      @PathVariable Long id,@PathVariable Integer sequence,
+      @AuthenticationPrincipal UserDetailsImpl userDetails){
+    columnsService.sequenceColumns(boardId,id,sequence,userDetails.getUser());
     return ResponseEntity.status(SUCCESS_COLUMNS_SEQUENCE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS_SEQUENCE));
   }
 
