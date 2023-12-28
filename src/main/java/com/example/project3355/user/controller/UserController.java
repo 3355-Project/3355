@@ -6,6 +6,7 @@ import com.example.project3355.global.jwt.JwtUtil;
 import com.example.project3355.user.UserDetailsImpl;
 import com.example.project3355.user.dto.UserInfoResponseDto;
 import com.example.project3355.user.dto.UserLoginRequestDto;
+import com.example.project3355.user.dto.UserPasswordUpdateRequestDto;
 import com.example.project3355.user.dto.UserProfileUpdateRequestDto;
 import com.example.project3355.user.dto.UserSignupRequestDto;
 import com.example.project3355.user.entity.User;
@@ -86,6 +87,24 @@ public class UserController {
       userService.updateProfile(userId, requestDto, loginUser);
       return ResponseEntity.ok()
           .body(new CommonResponseDto("프로필 수정 성공", HttpStatus.OK.value()));
+    } catch (BusinessException be) {
+      return ResponseEntity.status(be.getStatus())
+          .body(new CommonResponseDto(be.getMessage(), be.getStatus()));
+    }
+  }
+
+  @PatchMapping("/profile/{userId}/password")
+  public ResponseEntity<?> updatePassword(
+      @PathVariable Long userId,
+      @Valid @RequestBody UserPasswordUpdateRequestDto requestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+    User loginUser = userDetails.getUser();
+
+    try {
+      userService.updatePassword(userId, requestDto, loginUser);
+      return ResponseEntity.ok()
+          .body(new CommonResponseDto("비밀번호 수정 성공", HttpStatus.OK.value()));
     } catch (BusinessException be) {
       return ResponseEntity.status(be.getStatus())
           .body(new CommonResponseDto(be.getMessage(), be.getStatus()));
