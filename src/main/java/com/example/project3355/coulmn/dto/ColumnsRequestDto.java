@@ -1,4 +1,4 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.dto;
 
 
 import jakarta.validation.constraints.NotNull;

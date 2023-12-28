@@ -1,4 +1,4 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class ColumnsSequenceDto {
   private Integer sequence;
 

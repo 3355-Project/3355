@@ -1,4 +1,7 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.service;
+
+import com.example.project3355.coulmn.dto.ColumnsRequestDto;
+import com.example.project3355.coulmn.dto.ColumnsResponseDto;
 
 public interface ColumnsService {
 
