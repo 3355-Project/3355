@@ -2,10 +2,14 @@ package com.example.project3355.user.service;
 
 import com.example.project3355.global.exception.user.AlreadyExistEmailException;
 import com.example.project3355.global.exception.user.AlreadyExistUsernameException;
+import com.example.project3355.global.exception.user.AuthenticationMismatchException;
+import com.example.project3355.global.exception.user.PasswordConfirmationException;
 import com.example.project3355.global.exception.user.PasswordMismatchException;
 import com.example.project3355.global.exception.user.UserNotFoundException;
 import com.example.project3355.user.dto.UserInfoResponseDto;
 import com.example.project3355.user.dto.UserLoginRequestDto;
+import com.example.project3355.user.dto.UserPasswordUpdateRequestDto;
+import com.example.project3355.user.dto.UserProfileUpdateRequestDto;
 import com.example.project3355.user.dto.UserSignupRequestDto;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.user.repository.UserRepository;
@@ -33,7 +37,7 @@ public class UserService {
 
     // 비밀번호와 비밀번호 확인이 일치하지 않는 경우
     if (!Objects.equals(password, checkPassword)) {
-      throw new PasswordMismatchException();
+      throw new PasswordConfirmationException();
     }
 
     String encodePassword = passwordEncoder.encode(password);
@@ -70,7 +74,50 @@ public class UserService {
     return new UserInfoResponseDto(user);
   }
 
+  @Transactional
+  public void updateProfile(
+      Long userId, UserProfileUpdateRequestDto requestDto, User loginUser) {
+
+    User user = getUser(userId);
+
+    // 로그인한 유저와 수정할 프로필의 유저가 일치하는지 확인
+    if (!loginUser.getUsername().equals(user.getUsername())) {
+      throw new AuthenticationMismatchException();
+    }
+
+    user.update(requestDto);
+  }
+
+  @Transactional
+  public void updatePassword(
+      Long userId, UserPasswordUpdateRequestDto requestDto, User loginUser) {
+    String password = requestDto.getPassword();
+    String updatePassword = requestDto.getUpdatePassword();
+    String checkUpdatePassword = requestDto.getCheckUpdatePassword();
+
+    User user = getUser(userId);
+
+
+    if (!loginUser.getUsername().equals(user.getUsername())) {
+      throw new AuthenticationMismatchException();
+    }
+
+    if (!updatePassword.equals(checkUpdatePassword)) {
+      throw new PasswordConfirmationException();
+    }
+
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+      throw new PasswordMismatchException();
+    } else {
+      updatePassword = passwordEncoder.encode(updatePassword);
+      user.setPassword(updatePassword);
+    }
+
+    userRepository.save(user);
+  }
+
   public User getUser(Long userId) {
     return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
   }
+
 }
