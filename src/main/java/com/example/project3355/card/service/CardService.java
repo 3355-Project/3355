@@ -65,6 +65,12 @@ public class CardService {
         return new CardResponseDTO(card);
     }
 
+    public void deleteCard(Long cardId, User user) {
+        Card card = getUserCard(cardId, user);
+
+        cardRepository.delete(card);
+    }
+
     public Card getCard(Long cardId) {
 
         return cardRepository.findById(cardId)
