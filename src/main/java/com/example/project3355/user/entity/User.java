@@ -1,5 +1,7 @@
 package com.example.project3355.user.entity;
 
+import com.example.project3355.user.dto.UserPasswordUpdateRequestDto;
+import com.example.project3355.user.dto.UserProfileUpdateRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,4 +46,10 @@ public class User {
     this.email = email;
     this.introduce = introduce;
   }
+
+  public void update(UserProfileUpdateRequestDto requestDto) {
+    this.email = requestDto.getEmail();
+    this.introduce = requestDto.getIntroduce();
+  }
+
 }
