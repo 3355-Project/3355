@@ -20,9 +20,11 @@ public enum ErrorCode {
   AUTHENTICATION_MISMATCH_EXCEPTION(401, "수정 및 삭제 권한이 없습니다."),
 
   // board
+  INVALID_BOARD(404,"일치하는 보드가 없어요"),
 
   // coulmn
-  INVALID_COLUMNS(404,"일치하는 컬럼이 없어요");
+  INVALID_COLUMNS(404,"일치하는 컬럼이 없어요"),
+  INVALID_COLUMNS_SEQUENCE(400,"지금 순서랑 똑같아요");
 
   // card
 
