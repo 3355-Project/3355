@@ -17,10 +17,6 @@ public class UserBoard {
     @Column(name = "userBoard_id")
     private Long id;
 
-    @Column
-    private String username;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -30,7 +26,6 @@ public class UserBoard {
     private Board board;
 
     public UserBoard(Board board, User user) {
-        this.username = user.getUsername();
         this.board = board;
         this.user = user;
     }
