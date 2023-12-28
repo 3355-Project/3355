@@ -7,6 +7,7 @@ import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.global.common.Timestamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class Columns extends Timestamped {
   private Integer sequence;
 
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "board_id",nullable = false)
   private Board board;
 
