@@ -40,10 +40,15 @@ public class Board extends Timestamped {
     public void setUser(User user) {
         this.user = user;
     }
+    public void getUser(User user) {
+        this.user = user;
+    }
+
 
     public void update(BoardRequestDto boardRequestDto) {
         this.boardTitle=boardRequestDto.getBoardTitle();
         this.boardColor= boardRequestDto.getBoardColor();
         this.boardDescription= boardRequestDto.getBoardDescription();
     }
+
 }
