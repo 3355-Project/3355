@@ -1,26 +1,29 @@
 package com.example.project3355.coulmn;
 
 
+import com.example.project3355.board.entity.Board;
+import com.example.project3355.board.repository.BoardRepository;
 import com.example.project3355.global.exception.columns.ApiException;
 import com.example.project3355.global.exception.common.ErrorCode;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @RequiredArgsConstructor
 @Service
 public class ColumnsServiceImpl implements ColumnsService{
   private final ColumnsRepository columnsRepository;
-  //보드레포 추가
+  private final BoardRepository boardRepository;
 
   @Override
   public ColumnsResponseDto createColumns(ColumnsRequestDto columnsRequestDto, Long boardId) {
 
-    //보드 아이디로 보드 존재 확인
-//    ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto();
-//    sequenceDto.setSequence(columnsRepository.countByBoardId(boardId).intValue());
-    Columns columns = new Columns(columnsRequestDto);
-//    columns.addSequence(sequenceDto);
+    Board board = boardRepository.findById(boardId).orElseThrow(()-> new ApiException(ErrorCode.INVALID_BOARD));
+    ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto(columnsRepository.countByBoardId(boardId).intValue()+1);
+    Columns columns = new Columns(columnsRequestDto,board);
+    columns.addSequence(sequenceDto);
     Columns saveColumns = columnsRepository.save(columns);
     return new ColumnsResponseDto(saveColumns);
   }
@@ -39,15 +42,29 @@ public class ColumnsServiceImpl implements ColumnsService{
     columnsRepository.delete(columns);
   }
 
+  @Transactional
   @Override
-  public void sequenceColumns(Long id, Long sequenceId) {
+  public void sequenceColumns(Long boardId,Long id, Integer sequence) {
     Columns columns = findId(id);
-    //아직 완료 x
+    if(columns.getSequence().equals(sequence)){
+      throw new ApiException(ErrorCode.INVALID_COLUMNS_SEQUENCE);
+    }
+    else {
+      List<Columns> columnsList = columnsRepository.findByBoardIdAndSequenceBetween(boardId,columns.getSequence(),sequence);   // columns.getSequence()가 더낮다는 전체하에
+
+//      for(Columns column : columnsList){
+//        if(column.getSequence().equals(columns.getSequence())){
+//          column.addSequence();
+//        }
+//      }
+
+    }
+
   }
 
 
   public Columns findId(Long id){
-    Columns columns = columnsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("일치하는 컬럼이 없어요"));
+    Columns columns = columnsRepository.findById(id).orElseThrow(() -> new ApiException(ErrorCode.INVALID_COLUMNS));
     return columns;
   }
 

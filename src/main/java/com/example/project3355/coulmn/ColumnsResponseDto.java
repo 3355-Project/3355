@@ -13,9 +13,13 @@ public class ColumnsResponseDto {
   private String columnTitle;
   private LocalDateTime createdAt;
   private LocalDateTime modifiedAt;
+  private Integer sequence;
 
   public ColumnsResponseDto(Columns columns){
     this.columnTitle=columns.getColumnTitle();
+    this.createdAt=columns.getCreatedAt();
+    this.modifiedAt=columns.getModifiedAt();
+    this.sequence=columns.getSequence();
   }
 
 }

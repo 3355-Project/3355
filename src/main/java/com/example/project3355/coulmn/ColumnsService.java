@@ -8,5 +8,5 @@ public interface ColumnsService {
 
   void deleteColumns(Long id);
 
-  void sequenceColumns(Long id, Long sequenceId);
+  void sequenceColumns(Long boardId,Long id, Integer sequence);
 }
