@@ -40,7 +40,7 @@ public class CardService {
     public Map<UserInfoResponseDto, List<CardResponseDTO>> getUserCardMap() {
         Map<UserInfoResponseDto, List<CardResponseDTO>> userCardMap = new HashMap<>();
 
-        List<Card> cardList = cardRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
+        List<Card> cardList = cardRepository.findAll();
 
         cardList.forEach(card -> {
             var userDto = new UserInfoResponseDto(card.getUser());

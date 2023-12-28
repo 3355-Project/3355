@@ -30,7 +30,7 @@ public class CardController {
     public ResponseEntity<CardResponseDTO> postCard(@RequestBody CardRequestDTO cardRequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         CardResponseDTO responseDTO = cardService.createCard(cardRequestDTO, userDetails.getUser());
 
-        return ResponseEntity.status(201).body(responseDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     // 카드 조회
