@@ -1,7 +1,9 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.entity;
 
 
 import com.example.project3355.board.entity.Board;
+import com.example.project3355.coulmn.dto.ColumnsRequestDto;
+import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.global.common.Timestamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

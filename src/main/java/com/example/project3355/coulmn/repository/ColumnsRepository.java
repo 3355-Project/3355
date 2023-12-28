@@ -1,5 +1,6 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.repository;
 
+import com.example.project3355.coulmn.entity.Columns;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
