@@ -27,7 +27,7 @@ public class ColumnsController {
   private final ColumnsService columnsService;
 
 
-  @PostMapping("/{boardId}")
+  @PostMapping("/{boardId}/columns")
   public ResponseEntity<SuccessResponse> createColumns(
       @RequestBody ColumnsRequestDto columnsRequestDto,
       @PathVariable Long boardId){
@@ -53,9 +53,9 @@ public class ColumnsController {
     return ResponseEntity.status(SUCCESS_COLUMNS_DELETE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS_DELETE));
   }
 
-  @PutMapping("/columns/{id}/{sequenceId}")
-  public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long id,@PathVariable Long sequenceId){
-    columnsService.sequenceColumns(id,sequenceId);
+  @PutMapping("/{boardId}/columns/{id}/{sequence}")
+  public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long boardId,@PathVariable Long id,@PathVariable Integer sequence){
+    columnsService.sequenceColumns(boardId,id,sequence);
     return ResponseEntity.status(SUCCESS_COLUMNS_SEQUENCE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS_SEQUENCE));
   }
 

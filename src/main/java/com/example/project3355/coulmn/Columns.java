@@ -1,6 +1,7 @@
 package com.example.project3355.coulmn;
 
 
+import com.example.project3355.board.entity.Board;
 import com.example.project3355.global.common.Timestamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,12 +13,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name="columns")
 public class Columns extends Timestamped {
@@ -30,13 +30,14 @@ public class Columns extends Timestamped {
   private Integer sequence;
 
 
-//  @ManyToOne
-//  @JoinColumn(name = "board_id",nullable = false)
-//  private Board board;
+  @ManyToOne
+  @JoinColumn(name = "board_id",nullable = false)
+  private Board board;
 
 
-  public Columns(ColumnsRequestDto columnsRequestDto){
+  public Columns(ColumnsRequestDto columnsRequestDto,Board board){
     this.columnTitle=columnsRequestDto.getColumnTitle();
+    this.board=board;
   }
 
 
