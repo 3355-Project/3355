@@ -1,4 +1,4 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.controller;
 
 
 
@@ -8,6 +8,9 @@ import static com.example.project3355.global.exception.columns.ResponseCode.SUCC
 import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_SEQUENCE;
 import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_UPDATE;
 
+import com.example.project3355.coulmn.dto.ColumnsRequestDto;
+import com.example.project3355.coulmn.dto.ColumnsResponseDto;
+import com.example.project3355.coulmn.service.ColumnsService;
 import com.example.project3355.global.exception.columns.SuccessResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

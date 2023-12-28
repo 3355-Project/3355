@@ -1,6 +1,7 @@
-package com.example.project3355.coulmn;
+package com.example.project3355.coulmn.dto;
 
 
+import com.example.project3355.coulmn.entity.Columns;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
