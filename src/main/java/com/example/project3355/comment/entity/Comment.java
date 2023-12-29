@@ -1,6 +1,7 @@
-package com.example.project3355.comment;
+package com.example.project3355.comment.entity;
 
 import com.example.project3355.card.entity.Card;
+import com.example.project3355.comment.dto.CommentRequestDto;
 import com.example.project3355.global.common.Timestamped;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.Column;
@@ -14,7 +15,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
