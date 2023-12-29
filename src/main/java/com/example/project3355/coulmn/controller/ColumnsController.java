@@ -16,6 +16,7 @@ import com.example.project3355.global.exception.columns.SuccessResponse;
 import com.example.project3355.user.UserDetailsImpl;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
@@ -37,9 +39,10 @@ public class ColumnsController {
 
   @PostMapping("/{boardId}/columns")
   public ResponseEntity<SuccessResponse> createColumns(
-      @RequestBody ColumnsRequestDto columnsRequestDto,
       @PathVariable Long boardId,
+      @RequestBody ColumnsRequestDto columnsRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
+
     ColumnsResponseDto responseDto = columnsService.createColumns(columnsRequestDto,boardId,userDetails.getUser());
 
     return ResponseEntity.status(SUCCESS_COLUMNS.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS,responseDto));
