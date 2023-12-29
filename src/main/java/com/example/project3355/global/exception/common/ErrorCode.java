@@ -28,7 +28,10 @@ public enum ErrorCode {
   INVALID_MEMBERS(404,"멤버가 아닙니다"),
 
   // card
-  INVALID_CARD(404,"일치하는 카드가 없어요"),
+  INVALID_CARD_SEQUENCE(400,"지금 순서랑 똑같아요"),
+
+  INVALID_CARD(404,"일치하는 카드가 없어요");
+
 
   // comment
   INVALID_COMMENT(404,"일치하는 댓글이 없어요"),

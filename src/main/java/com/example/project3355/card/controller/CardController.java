@@ -3,11 +3,15 @@ package com.example.project3355.card.controller;
 import com.example.project3355.card.dto.CardListResponseDTO;
 import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.card.dto.CardResponseDTO;
+import com.example.project3355.card.repository.CardRepository;
 import com.example.project3355.card.service.CardService;
 import com.example.project3355.global.common.CommonResponseDto;
+import com.example.project3355.global.exception.columns.SuccessResponse;
 import com.example.project3355.user.UserDetailsImpl;
 import com.example.project3355.user.dto.UserInfoResponseDto;
+import com.example.project3355.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
+
+import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COLUMNS_SEQUENCE;
 
 @RequestMapping("/cards")
 @RestController
@@ -76,5 +82,12 @@ public class CardController {
         } catch (RejectedExecutionException | IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(new CommonResponseDto(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
+    }
+
+
+    @PutMapping("{cardId}/{sequence}")
+    public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long id, @PathVariable Integer sequence){
+        cardService.sequenceCard(id,sequence);
+        return ResponseEntity.status(SUCCESS_COLUMNS_SEQUENCE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS_SEQUENCE));
     }
 }
