@@ -39,6 +39,7 @@ public class BoardInvitationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponseDto("오류 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR.value()));
         }
     }
+
     // Board 초대된 사용자 리스트 조회
     @GetMapping("/{boardId}/inviteList")
     public ResponseEntity<List<String>> getInvitedUsersForBoard(
