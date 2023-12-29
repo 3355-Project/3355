@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WatchController {
   private final WatchService watchService;
 
-  @PostMapping("{id}/watch")
+  @PostMapping("/{id}/watch")
   public ResponseEntity<SuccessResponse> createWatch(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
     watchService.createWatch(id,userDetails.getUser());
