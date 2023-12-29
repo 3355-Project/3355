@@ -61,6 +61,7 @@ public class CardService {
 
         card.setCardTitle(cardRequestDTO.getCardTitle());
         card.setCardDescription(cardRequestDTO.getCardDescription());
+        card.setDeadline(cardRequestDTO.getDeadline());
 
         return new CardResponseDTO(card);
     }
