@@ -6,6 +6,8 @@ import com.example.project3355.card.entity.Card;
 import com.example.project3355.card.repository.CardRepository;
 import com.example.project3355.user.dto.UserInfoResponseDto;
 import com.example.project3355.user.entity.User;
+import com.example.project3355.user.repository.UserRepository;
+import com.example.project3355.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class CardService {
 
     private final CardRepository cardRepository;
+    private final UserRepository userRepository;
 
     public CardResponseDTO createCard(CardRequestDTO dto, User user) {
         Card card = new Card(dto);
@@ -57,13 +60,16 @@ public class CardService {
 
     @Transactional
     public CardResponseDTO updateCard(Long cardId, CardRequestDTO cardRequestDTO, User user) {
+        User worker = getUserById(cardRequestDTO.getWorkerId()); // workerId를 User 엔티티로 변환
         Card card = getUserCard(cardId, user);
 
         card.setCardTitle(cardRequestDTO.getCardTitle());
         card.setCardDescription(cardRequestDTO.getCardDescription());
+        card.setWorker(worker);
 
         return new CardResponseDTO(card);
     }
+
 
     public void deleteCard(Long cardId, User user) {
         Card card = getUserCard(cardId, user);
@@ -85,4 +91,11 @@ public class CardService {
         }
         return card;
     }
+
+    // 사용자 ID를 기반으로 사용자를 조회하는 메서드
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 ID입니다."));
+    }
+
 }
