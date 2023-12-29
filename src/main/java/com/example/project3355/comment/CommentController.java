@@ -20,24 +20,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/cards")
+@RequestMapping("/api")
 public class CommentController {
   private final CommentService commentService;
 
 
-  @PostMapping("/{cardId}/comment")
-  public ResponseEntity<SuccessResponse> createComment(@PathVariable Long cardId,
+  @PostMapping("{id}/comment")
+  public ResponseEntity<SuccessResponse> createComment(@PathVariable Long id,
       @RequestBody CommentRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    CommentResponseDto responseDto = commentService.createComment(cardId,requestDto,userDetails.getUser());
+    CommentResponseDto responseDto = commentService.createComment(id,requestDto,userDetails.getUser());
     return ResponseEntity.status(SUCCESS_COMMENT.getHttpStatus()).body(new SuccessResponse(SUCCESS_COMMENT,responseDto));
   }
 
-  @PutMapping("/{cardId}/comment/{id}")
-  public ResponseEntity<SuccessResponse> updateComment(@PathVariable Long cardId,@PathVariable Long id,
+  @PutMapping("/comment/{id}")
+  public ResponseEntity<SuccessResponse> updateComment(@PathVariable Long id,
       @RequestBody CommentRequestDto commentRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    CommentResponseDto responseDto = commentService.updateComment(cardId,id,commentRequestDto,userDetails.getUser());
+    CommentResponseDto responseDto = commentService.updateComment(id,commentRequestDto,userDetails.getUser());
     return ResponseEntity.status(SUCCESS_COMMENT_UPDATE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COMMENT_UPDATE,responseDto));
   }
 
