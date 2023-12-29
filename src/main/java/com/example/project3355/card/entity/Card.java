@@ -3,6 +3,7 @@ package com.example.project3355.card.entity;
 import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,13 +30,14 @@ public class Card implements Serializable {
     @Column(nullable = false)
     String cardDescription;
 
+    @Column(nullable = false)
+    LocalDateTime deadline = LocalDateTime.now();
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     // TODO: 작업자
-
-    // TODO: 마감시간
 
     @Builder
     public Card(String cardTitle, String cardColor , String cardDescription) {
@@ -48,5 +50,6 @@ public class Card implements Serializable {
         this.cardTitle = dto.getCardTitle();
         this.cardColor = dto.getCardColor();
         this.cardDescription = dto.getCardDescription();
+        this.deadline = dto.getDeadline();
     }
 }
