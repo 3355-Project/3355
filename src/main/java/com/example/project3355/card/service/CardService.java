@@ -5,6 +5,8 @@ import com.example.project3355.card.dto.CardResponseDTO;
 import com.example.project3355.card.dto.CardSequenceDTO;
 import com.example.project3355.card.entity.Card;
 import com.example.project3355.card.repository.CardRepository;
+import com.example.project3355.coulmn.entity.Columns;
+import com.example.project3355.coulmn.repository.ColumnsRepository;
 import com.example.project3355.global.exception.columns.ApiException;
 import com.example.project3355.global.exception.common.ErrorCode;
 import com.example.project3355.user.dto.UserInfoResponseDto;
@@ -23,9 +25,11 @@ public class CardService {
 
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
+    private final ColumnsRepository columnsRepository;
 
     public CardResponseDTO createCard(CardRequestDTO dto, User user) {
-        Card card = new Card(dto);
+        Columns columns = columnsRepository.findById(dto.getColumnsId()).orElseThrow(()-> new ApiException(ErrorCode.INVALID_COLUMNS));
+        Card card = new Card(dto,columns);
         card.setUser(user);
 
         var saved = cardRepository.save(card);

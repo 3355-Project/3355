@@ -43,6 +43,10 @@ public class Card implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "columns_id", nullable = false)
+    private Columns columns;
+
 
     @Builder
     public Card(String cardTitle, String cardColor , String cardDescription) {
@@ -51,11 +55,12 @@ public class Card implements Serializable {
         this.cardDescription = cardDescription;
     }
 
-    public Card(CardRequestDTO dto) {
+    public Card(CardRequestDTO dto,Columns columns) {
         this.cardTitle = dto.getCardTitle();
         this.cardColor = dto.getCardColor();
         this.cardDescription = dto.getCardDescription();
         this.deadline = dto.getDeadline();
+        this.columns=columns;
     }
 
     public void addSequence(CardSequenceDTO sequenceDto){
