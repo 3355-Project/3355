@@ -5,5 +5,6 @@ import com.example.project3355.card.entity.Watch;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WatchRepository extends JpaRepository<Watch, Long> {
+  Boolean existsByCardIdAndUserId(Long cardId,Long userId);
 
 }
