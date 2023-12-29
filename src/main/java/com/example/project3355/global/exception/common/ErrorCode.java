@@ -30,7 +30,7 @@ public enum ErrorCode {
   // card
   INVALID_CARD_SEQUENCE(400,"지금 순서랑 똑같아요"),
 
-  INVALID_CARD(404,"일치하는 카드가 없어요");
+  INVALID_CARD(404,"일치하는 카드가 없어요"),
 
 
   // comment

@@ -13,6 +13,7 @@ import lombok.Setter;
 @Builder
 @EqualsAndHashCode
 public class CardRequestDTO {
+    private Long columnsId;
     private String cardTitle;
     private String cardColor;
     private String cardDescription;
