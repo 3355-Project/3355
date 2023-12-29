@@ -29,6 +29,8 @@ public class BoardService {
         Board board = new Board(boardRequestDto, user);
         board.setUser(user);
         var saved = boardRepository.save(board);
+        UserBoard userBoard = new UserBoard(board,user);
+        userBoardRepository.save(userBoard);
         return new BoardResponseDto(saved);
     }
 

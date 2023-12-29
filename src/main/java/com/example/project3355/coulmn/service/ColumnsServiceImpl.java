@@ -31,7 +31,6 @@ public class ColumnsServiceImpl implements ColumnsService{
   @Override
   public ColumnsResponseDto createColumns(ColumnsRequestDto columnsRequestDto, Long boardId,
       User user) {
-
     Board board = boardRepository.findById(boardId).orElseThrow(()-> new ApiException(ErrorCode.INVALID_BOARD));
     List<UserBoard> list = findMember(boardId,user);
     if(list.isEmpty()){
@@ -122,6 +121,7 @@ public class ColumnsServiceImpl implements ColumnsService{
     return columns;
   }
 
+  @Override
   public List<UserBoard> findMember(Long boardId,User user){
     List<UserBoard> list = userBoardRepository.findAllByBoardId(boardId);
     List<UserBoard> userBoardList = new ArrayList<>();
