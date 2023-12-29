@@ -60,7 +60,7 @@ public class BoardController {
 
     // 선택 조회
     @ResponseBody
-    @GetMapping("{boardId}")
+    @GetMapping("/{boardId}")
     public BoardResponseDto getBoard(@PathVariable Long boardId) {
         return boardService.getBoard(boardId);
     }
