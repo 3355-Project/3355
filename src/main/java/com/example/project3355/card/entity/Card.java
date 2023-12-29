@@ -1,6 +1,9 @@
 package com.example.project3355.card.entity;
 
 import com.example.project3355.card.dto.CardRequestDTO;
+import com.example.project3355.card.dto.CardSequenceDTO;
+import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
+import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -20,6 +23,8 @@ public class Card implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
+    private Integer sequence;
 
     @Column(nullable = false)
     String cardTitle;
@@ -30,14 +35,14 @@ public class Card implements Serializable {
     @Column(nullable = false)
     String cardDescription;
 
+
     @Column(nullable = false)
     LocalDateTime deadline = LocalDateTime.now();
-
+  
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // TODO: 작업자
 
     @Builder
     public Card(String cardTitle, String cardColor , String cardDescription) {
@@ -52,4 +57,9 @@ public class Card implements Serializable {
         this.cardDescription = dto.getCardDescription();
         this.deadline = dto.getDeadline();
     }
+
+    public void addSequence(CardSequenceDTO sequenceDto){
+        this.sequence= sequenceDto.getSequence();
+    }
+
 }

@@ -2,19 +2,19 @@ package com.example.project3355.card.service;
 
 import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.card.dto.CardResponseDTO;
+import com.example.project3355.card.dto.CardSequenceDTO;
 import com.example.project3355.card.entity.Card;
 import com.example.project3355.card.repository.CardRepository;
+import com.example.project3355.global.exception.columns.ApiException;
+import com.example.project3355.global.exception.common.ErrorCode;
 import com.example.project3355.user.dto.UserInfoResponseDto;
 import com.example.project3355.user.entity.User;
+import com.example.project3355.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
@@ -22,6 +22,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class CardService {
 
     private final CardRepository cardRepository;
+    private final UserRepository userRepository;
 
     public CardResponseDTO createCard(CardRequestDTO dto, User user) {
         Card card = new Card(dto);
@@ -66,6 +67,7 @@ public class CardService {
         return new CardResponseDTO(card);
     }
 
+
     public void deleteCard(Long cardId, User user) {
         Card card = getUserCard(cardId, user);
 
@@ -86,4 +88,33 @@ public class CardService {
         }
         return card;
     }
+
+    // 사용자 ID를 기반으로 사용자를 조회하는 메서드
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 ID입니다."));
+    }
+
+
+    @Transactional
+    public void sequenceCard(Long id, Integer sequence) {
+        Card card = findById(id);
+
+        if (card.getSequence().equals(sequence)) {
+            throw new ApiException(ErrorCode.INVALID_CARD_SEQUENCE);
+        } else {
+            // cardList를 사용하지 않고, 단일 카드에 대해서만 처리
+            CardSequenceDTO sequenceDto = new CardSequenceDTO(sequence);
+            card.addSequence(sequenceDto);
+        }
+    }
+
+    // findById 메서드 정의
+    public Card findById(Long id) {
+        // 해당 ID에 대한 카드를 찾아서 반환하는 구현
+        // 예시: 실제로는 데이터베이스에서 카드를 조회하게 됩니다.
+        return cardRepository.findById(id).orElse(null);
+    }
+
+
 }

@@ -6,6 +6,8 @@ import com.example.project3355.user.dto.UserInfoResponseDto;
 import java.time.LocalDateTime;
 import lombok.*;
 
+import java.util.Optional;
+
 @Getter
 @Setter
 @Builder
@@ -18,8 +20,8 @@ public class CardResponseDTO extends CommonResponseDto {
     private String cardDescription;
     private LocalDateTime deadline;
     private UserInfoResponseDto user;
+    private Integer sequence;
 
-    //TODO: 작업자
 
     public CardResponseDTO(String msg, Integer statusCode) {
         super(msg, statusCode);
@@ -32,5 +34,6 @@ public class CardResponseDTO extends CommonResponseDto {
         this.cardDescription = card.getCardDescription();
         this.deadline = card.getDeadline();
         this.user = new UserInfoResponseDto(card.getUser());
+        this.sequence=card.getSequence();
     }
 }
