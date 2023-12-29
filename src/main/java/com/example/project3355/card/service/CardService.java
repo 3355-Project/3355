@@ -58,12 +58,10 @@ public class CardService {
 
     @Transactional
     public CardResponseDTO updateCard(Long cardId, CardRequestDTO cardRequestDTO, User user) {
-        User worker = getUserById(cardRequestDTO.getWorkerId()); // workerId를 User 엔티티로 변환
         Card card = getUserCard(cardId, user);
 
         card.setCardTitle(cardRequestDTO.getCardTitle());
         card.setCardDescription(cardRequestDTO.getCardDescription());
-        card.setWorker(worker);
 
         return new CardResponseDTO(card);
     }
@@ -105,7 +103,7 @@ public class CardService {
             throw new ApiException(ErrorCode.INVALID_CARD_SEQUENCE);
         } else {
             // cardList를 사용하지 않고, 단일 카드에 대해서만 처리
-            CardSequenceDTO sequenceDto = new CardSequenceDTO();
+            CardSequenceDTO sequenceDto = new CardSequenceDTO(sequence);
             card.addSequence(sequenceDto);
         }
     }

@@ -66,19 +66,7 @@ public class CardController {
     @PutMapping("/{cardId}")
     public ResponseEntity<CardResponseDTO> putCard(@PathVariable Long cardId, @RequestBody CardRequestDTO cardRequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
-            User worker;
-
-            // 클라이언트에서 작업자 정보를 전달했는지 확인
-            if (cardRequestDTO.getWorker() != null) {
-                // 작업자 정보가 클라이언트에서 전달되었다면 해당 정보로 업데이트
-                worker = cardRequestDTO.getWorker();
-            } else {
-                // 클라이언트에서 작업자 정보를 전달하지 않은 경우, 기존 작업자 정보를 사용
-                CardResponseDTO existingCardDTO = cardService.getCardDto(cardId);
-                worker = existingCardDTO.getWorker();  // 기존 작업자 정보 가져오기
-            }
-
-            CardResponseDTO responseDTO = cardService.updateCard(cardId, cardRequestDTO, worker);
+            CardResponseDTO responseDTO = cardService.updateCard(cardId, cardRequestDTO, userDetails.getUser());
             return ResponseEntity.ok().body(responseDTO);
         } catch (RejectedExecutionException | IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(new CardResponseDTO(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
@@ -95,6 +83,7 @@ public class CardController {
             return ResponseEntity.badRequest().body(new CommonResponseDto(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
+
 
     @PutMapping("{cardId}/{sequence}")
     public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long id, @PathVariable Integer sequence){

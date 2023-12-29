@@ -19,9 +19,7 @@ public class CardResponseDTO extends CommonResponseDto {
     private String cardColor;
     private String cardDescription;
     private UserInfoResponseDto user;
-    private User worker;  // 작업자
-
-    //TODO: 마감시간
+    private Integer sequence;
 
     public CardResponseDTO(String msg, Integer statusCode) {
         super(msg, statusCode);
@@ -32,17 +30,7 @@ public class CardResponseDTO extends CommonResponseDto {
         this.cardTitle = card.getCardTitle();
         this.cardColor = card.getCardColor();
         this.cardDescription = card.getCardDescription();
-
-        // 작업자 정보 추가
-        if (card.getWorker() != null) {
-            this.worker = new User(
-                    card.getWorker().getUsername(),
-                    card.getWorker().getPassword(),
-                    card.getWorker().getEmail(),
-                    card.getWorker().getIntroduce()
-            );
-        }
-
         this.user = new UserInfoResponseDto(card.getUser());
+        this.sequence=card.getSequence();
     }
 }

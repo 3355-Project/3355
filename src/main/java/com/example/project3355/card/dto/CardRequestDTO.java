@@ -14,12 +14,4 @@ public class CardRequestDTO {
     private String cardTitle;
     private String cardColor;
     private String cardDescription;
-
-    // 추가: 작업자 ID
-    private Long workerId;
-
-    // 추가: 작업자 정보 조회 메서드
-    public User getWorker() {
-        return (workerId != null) ? getWorker() : null;
-    }
 }

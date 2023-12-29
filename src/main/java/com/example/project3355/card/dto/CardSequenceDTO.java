@@ -6,7 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class CardSequenceDTO {
     private Integer sequence;
+
+    public CardSequenceDTO(Integer sequence){
+        this.sequence=sequence;
+    }
 }
