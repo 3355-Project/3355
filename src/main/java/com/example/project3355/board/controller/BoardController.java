@@ -36,7 +36,9 @@ public class BoardController {
 
     // 전체 조회
     @GetMapping("")
-    public List<BoardResponseDto> getOwnPostList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public List<BoardResponseDto> getOwnPostList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         try {
             List<Board> ownPosts;
             if (userDetails == null) {

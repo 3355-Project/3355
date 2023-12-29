@@ -10,12 +10,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "username")
+@Table(name = "member")
 public class UserBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userBoard_id")
     private Long id;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -24,6 +25,11 @@ public class UserBoard {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    @Column
+    private String username;
+
+
 
     public UserBoard(Board board, User user) {
         this.board = board;
