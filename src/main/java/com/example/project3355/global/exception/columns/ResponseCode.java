@@ -17,7 +17,9 @@ public enum ResponseCode {
 	SUCCESS_COLUMNS_SEQUENCE(OK,"컬럼 순서 이동 성공"),
 	SUCCESS_COMMENT(CREATED,"댓글 생성 성공"),
 	SUCCESS_COMMENT_UPDATE(OK,"댓글 수정 성공"),
-	SUCCESS_COMMENT_DELETE(OK,"댓글 삭제 성공");
+	SUCCESS_COMMENT_DELETE(OK,"댓글 삭제 성공"),
+	SUCCESS_WATCH(CREATED,"watch 생성 성공"),
+	SUCCESS_WATCH_DELETE(OK,"watch 삭제 성공");
 
 
 	private final HttpStatus httpStatus;
