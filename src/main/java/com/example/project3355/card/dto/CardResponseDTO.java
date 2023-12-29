@@ -3,6 +3,7 @@ package com.example.project3355.card.dto;
 import com.example.project3355.card.entity.Card;
 import com.example.project3355.global.common.CommonResponseDto;
 import com.example.project3355.user.dto.UserInfoResponseDto;
+import java.time.LocalDateTime;
 import lombok.*;
 
 @Getter
@@ -15,10 +16,10 @@ public class CardResponseDTO extends CommonResponseDto {
     private String cardTitle;
     private String cardColor;
     private String cardDescription;
+    private LocalDateTime deadline;
     private UserInfoResponseDto user;
 
     //TODO: 작업자
-    //TODO: 마감시간
 
     public CardResponseDTO(String msg, Integer statusCode) {
         super(msg, statusCode);
@@ -29,6 +30,7 @@ public class CardResponseDTO extends CommonResponseDto {
         this.cardTitle = card.getCardTitle();
         this.cardColor = card.getCardColor();
         this.cardDescription = card.getCardDescription();
+        this.deadline = card.getDeadline();
         this.user = new UserInfoResponseDto(card.getUser());
     }
 }

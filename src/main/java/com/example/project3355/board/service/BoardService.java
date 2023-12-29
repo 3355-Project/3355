@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -99,6 +100,12 @@ public class BoardService {
     }
     private Optional<Board> findByBoard(Long boardId) {
         return boardRepository.findById(boardId);
+    }
+
+    // 보드 사용자 리스트 조회
+
+    public List<UserBoard> getInvitedUsersForBoard(Long boardId) {
+        return userBoardRepository.findByBoardId(boardId);
     }
 }
 

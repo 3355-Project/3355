@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -30,6 +33,11 @@ public class Board extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<UserBoard> userBoardList = new ArrayList<>();
+
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -49,5 +57,7 @@ public class Board extends Timestamped {
     public User getOwner() {
         return this.user;
     }
+
+
 }
 
