@@ -10,11 +10,15 @@ public interface ColumnsService {
 
   ColumnsResponseDto createColumns(ColumnsRequestDto columnsRequestDto, Long boardId, User user);
 
+  List<ColumnsResponseDto> getOneBoardColumns(Long id);
+
   ColumnsResponseDto updateColumns(ColumnsRequestDto requestDto, Long id,User user);
 
   void deleteColumns(Long id,User user);
 
-  void sequenceColumns(Long boardId,Long id, Integer sequence,User user);
+  void sequenceColumns(Long id, Integer sequence,User user);
 
   List<UserBoard> findMember(Long boardId,User user);
+
+
 }
