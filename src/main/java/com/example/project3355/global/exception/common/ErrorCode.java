@@ -25,9 +25,10 @@ public enum ErrorCode {
   // coulmn
   INVALID_COLUMNS(404,"일치하는 컬럼이 없어요"),
   INVALID_COLUMNS_SEQUENCE(400,"지금 순서랑 똑같아요"),
-  INVALID_MEMBERS(404,"멤버가 아닙니다");
+  INVALID_MEMBERS(404,"멤버가 아닙니다"),
 
   // card
+  INVALID_CARD_SEQUENCE(400,"지금 순서랑 똑같아요");
 
   // comment
 

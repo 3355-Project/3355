@@ -1,6 +1,8 @@
 package com.example.project3355.card.entity;
 
 import com.example.project3355.card.dto.CardRequestDTO;
+import com.example.project3355.card.dto.CardSequenceDTO;
+import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.*;
@@ -29,6 +31,9 @@ public class Card implements Serializable {
 
     @Column(nullable = false)
     String cardDescription;
+
+    @Column(nullable = false)
+    private Integer sequence;
 
     // 컬럼
     @ManyToOne
@@ -60,6 +65,10 @@ public class Card implements Serializable {
         this.cardColor = dto.getCardColor();
         this.cardDescription = dto.getCardDescription();
         this.worker = worker; // 전달받은 worker를 작업자로 등록
+    }
+
+    public void addSequence(CardSequenceDTO sequenceDto){
+        this.sequence=sequenceDto.getSequence();
     }
 
 }
