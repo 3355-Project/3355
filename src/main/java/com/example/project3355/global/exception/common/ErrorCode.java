@@ -31,7 +31,9 @@ public enum ErrorCode {
   INVALID_CARD(404,"일치하는 카드가 없어요"),
 
   // comment
-  INVALID_COMMENT(404,"일치하는 댓글이 없어요");
+  INVALID_COMMENT(404,"일치하는 댓글이 없어요"),
+  INVALID_WATCH_EXIST(401,"이미 해당카드에 watch를 하셨어요"),
+  INVALID_WATCH(404,"일치하는 watch가 없어요");
 
   private final int status;
 

@@ -3,7 +3,6 @@ package com.example.project3355.card.entity;
 import com.example.project3355.global.common.Timestamped;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
