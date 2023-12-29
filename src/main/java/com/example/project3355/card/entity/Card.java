@@ -2,11 +2,14 @@ package com.example.project3355.card.entity;
 
 import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.card.dto.CardSequenceDTO;
+import com.example.project3355.comment.entity.Comment;
 import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +49,12 @@ public class Card implements Serializable {
     @ManyToOne
     @JoinColumn(name = "columns_id", nullable = false)
     private Columns columns;
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
+    private List<Watch> watchList = new ArrayList<>();
 
 
     @Builder

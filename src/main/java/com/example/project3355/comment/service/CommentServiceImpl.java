@@ -26,7 +26,7 @@ public class CommentServiceImpl  implements CommentService {
   @Override
   public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, User user) {
     Card card = findCardId(id);
-//    columnsService.findMember();
+    columnsService.findMember(card.getColumns().getBoard().getId(),user);
     Comment comment = commentRepository.save(new Comment(requestDto,card,user));
     return new CommentResponseDto(comment);
   }
@@ -36,6 +36,7 @@ public class CommentServiceImpl  implements CommentService {
   public CommentResponseDto updateComment(Long id, CommentRequestDto commentRequestDto,
       User user) {
     Comment comment =findCommentId(id);
+    columnsService.findMember(comment.getCard().getColumns().getBoard().getId(),user);
     comment.update(commentRequestDto);
     return new CommentResponseDto(comment);
   }
@@ -43,6 +44,7 @@ public class CommentServiceImpl  implements CommentService {
   @Override
   public void deleteComment(Long id, User user) {
     Comment comment =findCommentId(id);
+    columnsService.findMember(comment.getCard().getColumns().getBoard().getId(),user);
     commentRepository.delete(comment);
   }
 
