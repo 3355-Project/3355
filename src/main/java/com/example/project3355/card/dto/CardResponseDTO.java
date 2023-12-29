@@ -3,7 +3,7 @@ package com.example.project3355.card.dto;
 import com.example.project3355.card.entity.Card;
 import com.example.project3355.global.common.CommonResponseDto;
 import com.example.project3355.user.dto.UserInfoResponseDto;
-import com.example.project3355.user.entity.User;
+import java.time.LocalDateTime;
 import lombok.*;
 
 import java.util.Optional;
@@ -18,8 +18,10 @@ public class CardResponseDTO extends CommonResponseDto {
     private String cardTitle;
     private String cardColor;
     private String cardDescription;
+    private LocalDateTime deadline;
     private UserInfoResponseDto user;
     private Integer sequence;
+
 
     public CardResponseDTO(String msg, Integer statusCode) {
         super(msg, statusCode);
@@ -30,6 +32,7 @@ public class CardResponseDTO extends CommonResponseDto {
         this.cardTitle = card.getCardTitle();
         this.cardColor = card.getCardColor();
         this.cardDescription = card.getCardDescription();
+        this.deadline = card.getDeadline();
         this.user = new UserInfoResponseDto(card.getUser());
         this.sequence=card.getSequence();
     }

@@ -17,10 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ColumnsServiceImpl implements ColumnsService{
@@ -31,8 +32,9 @@ public class ColumnsServiceImpl implements ColumnsService{
   @Override
   public ColumnsResponseDto createColumns(ColumnsRequestDto columnsRequestDto, Long boardId,
       User user) {
-
     Board board = boardRepository.findById(boardId).orElseThrow(()-> new ApiException(ErrorCode.INVALID_BOARD));
+
+
     List<UserBoard> list = findMember(boardId,user);
     if(list.isEmpty()){
       throw new ApiException(ErrorCode.INVALID_MEMBERS);
@@ -44,6 +46,18 @@ public class ColumnsServiceImpl implements ColumnsService{
     columns.addSequence(sequenceDto);
     Columns saveColumns = columnsRepository.save(columns);
     return new ColumnsResponseDto(saveColumns);
+  }
+
+  @Override
+  public List<ColumnsResponseDto> getOneBoardColumns(Long id) {
+    List<Columns> columnsList = columnsRepository.findAllByBoardIdOrderBySequence(id);
+    List<ColumnsResponseDto> responseDtoList = new ArrayList<>();
+
+    for(Columns columns : columnsList){
+      responseDtoList.add(new ColumnsResponseDto(columns));
+    }
+
+    return responseDtoList;
   }
 
   @Transactional
@@ -66,14 +80,22 @@ public class ColumnsServiceImpl implements ColumnsService{
     if(list.isEmpty()){
       throw new ApiException(ErrorCode.INVALID_MEMBERS);
     }
+    Long lastSequence = columnsRepository.countByBoardId(columns.getBoard().getId());
+
+    List<Columns> columnsList = columnsRepository.findByBoardIdAndSequenceBetween(columns.getBoard().getId(),columns.getSequence(),lastSequence.intValue());
+    for(Columns colum : columnsList){
+      ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto(colum.getSequence()-1);
+      colum.addSequence(sequenceDto);
+    }
+
     columnsRepository.delete(columns);
   }
 
   @Transactional
   @Override
-  public void sequenceColumns(Long boardId,Long id, Integer sequence,User user) {
+  public void sequenceColumns(Long id, Integer sequence,User user) {
     Columns columns = findId(id);
-    List<UserBoard> list = findMember(boardId,user);
+    List<UserBoard> list = findMember(columns.getBoard().getId(),user);
     if(list.isEmpty()){
       throw new ApiException(ErrorCode.INVALID_MEMBERS);
     }
@@ -84,7 +106,7 @@ public class ColumnsServiceImpl implements ColumnsService{
     else {
       List<Columns> columnsList;
       if(columns.getSequence()<sequence){
-        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(boardId,columns.getSequence(),sequence); // columns.getSequence()가 더낮다는 전체하에
+        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(columns.getBoard().getId(),columns.getSequence(),sequence); // columns.getSequence()가 더낮다는 전체하에
         for(Columns column : columnsList){
           if(Objects.equals(columns.getId(), column.getId())){
             ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto(sequence);
@@ -97,7 +119,7 @@ public class ColumnsServiceImpl implements ColumnsService{
         }
       }
       else {
-        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(boardId,sequence,columns.getSequence());
+        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(columns.getBoard().getId(),sequence,columns.getSequence());
         for(Columns column : columnsList){
           if(Objects.equals(columns.getId(), column.getId())){
             ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto(sequence);
@@ -122,6 +144,7 @@ public class ColumnsServiceImpl implements ColumnsService{
     return columns;
   }
 
+  @Override
   public List<UserBoard> findMember(Long boardId,User user){
     List<UserBoard> list = userBoardRepository.findAllByBoardId(boardId);
     List<UserBoard> userBoardList = new ArrayList<>();
@@ -133,6 +156,8 @@ public class ColumnsServiceImpl implements ColumnsService{
 
     return userBoardList;
   }
+
+
 
 
 }

@@ -1,6 +1,8 @@
 package com.example.project3355.card.dto;
 
-import com.example.project3355.user.entity.User;
+
+import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,4 +16,5 @@ public class CardRequestDTO {
     private String cardTitle;
     private String cardColor;
     private String cardDescription;
+    private LocalDateTime deadline;
 }

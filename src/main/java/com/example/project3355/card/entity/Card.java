@@ -6,6 +6,7 @@ import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,17 +35,14 @@ public class Card implements Serializable {
     @Column(nullable = false)
     String cardDescription;
 
-    // 컬럼
-    @ManyToOne
-    @JoinColumn(name = "column_id")
-    private Columns columns;
 
+    @Column(nullable = false)
+    LocalDateTime deadline = LocalDateTime.now();
+  
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-
-    // TODO: 마감시간
 
     @Builder
     public Card(String cardTitle, String cardColor , String cardDescription) {
@@ -57,6 +55,7 @@ public class Card implements Serializable {
         this.cardTitle = dto.getCardTitle();
         this.cardColor = dto.getCardColor();
         this.cardDescription = dto.getCardDescription();
+        this.deadline = dto.getDeadline();
     }
 
     public void addSequence(CardSequenceDTO sequenceDto){

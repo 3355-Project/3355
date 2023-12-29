@@ -2,11 +2,15 @@ package com.example.project3355.board.entity;
 
 
 import com.example.project3355.board.dto.BoardRequestDto;
+import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.global.common.Timestamped;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,6 +34,15 @@ public class Board extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<UserBoard> userBoardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Columns> columnList = new ArrayList<>();
+
+
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -49,5 +62,7 @@ public class Board extends Timestamped {
     public User getOwner() {
         return this.user;
     }
+
+
 }
 
