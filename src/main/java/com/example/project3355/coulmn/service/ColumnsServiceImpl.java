@@ -45,6 +45,18 @@ public class ColumnsServiceImpl implements ColumnsService{
     return new ColumnsResponseDto(saveColumns);
   }
 
+  @Override
+  public List<ColumnsResponseDto> getOneBoardColumns(Long id) {
+    List<Columns> columnsList = columnsRepository.findAllByBoardIdOrderBySequence(id);
+    List<ColumnsResponseDto> responseDtoList = new ArrayList<>();
+
+    for(Columns columns : columnsList){
+      responseDtoList.add(new ColumnsResponseDto(columns));
+    }
+
+    return responseDtoList;
+  }
+
   @Transactional
   @Override
   public ColumnsResponseDto updateColumns(ColumnsRequestDto requestDto, Long id,User user) {
@@ -65,14 +77,22 @@ public class ColumnsServiceImpl implements ColumnsService{
     if(list.isEmpty()){
       throw new ApiException(ErrorCode.INVALID_MEMBERS);
     }
+    Long lastSequence = columnsRepository.countByBoardId(columns.getBoard().getId());
+
+    List<Columns> columnsList = columnsRepository.findByBoardIdAndSequenceBetween(columns.getBoard().getId(),columns.getSequence(),lastSequence.intValue());
+    for(Columns colum : columnsList){
+      ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto(colum.getSequence()-1);
+      colum.addSequence(sequenceDto);
+    }
+
     columnsRepository.delete(columns);
   }
 
   @Transactional
   @Override
-  public void sequenceColumns(Long boardId,Long id, Integer sequence,User user) {
+  public void sequenceColumns(Long id, Integer sequence,User user) {
     Columns columns = findId(id);
-    List<UserBoard> list = findMember(boardId,user);
+    List<UserBoard> list = findMember(columns.getBoard().getId(),user);
     if(list.isEmpty()){
       throw new ApiException(ErrorCode.INVALID_MEMBERS);
     }
@@ -83,7 +103,7 @@ public class ColumnsServiceImpl implements ColumnsService{
     else {
       List<Columns> columnsList;
       if(columns.getSequence()<sequence){
-        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(boardId,columns.getSequence(),sequence); // columns.getSequence()가 더낮다는 전체하에
+        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(columns.getBoard().getId(),columns.getSequence(),sequence); // columns.getSequence()가 더낮다는 전체하에
         for(Columns column : columnsList){
           if(Objects.equals(columns.getId(), column.getId())){
             ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto(sequence);
@@ -96,7 +116,7 @@ public class ColumnsServiceImpl implements ColumnsService{
         }
       }
       else {
-        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(boardId,sequence,columns.getSequence());
+        columnsList = columnsRepository.findByBoardIdAndSequenceBetween(columns.getBoard().getId(),sequence,columns.getSequence());
         for(Columns column : columnsList){
           if(Objects.equals(columns.getId(), column.getId())){
             ColumnsSequenceDto sequenceDto = new ColumnsSequenceDto(sequence);
@@ -133,6 +153,8 @@ public class ColumnsServiceImpl implements ColumnsService{
 
     return userBoardList;
   }
+
+
 
 
 }
