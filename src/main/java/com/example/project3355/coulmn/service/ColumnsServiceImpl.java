@@ -17,10 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ColumnsServiceImpl implements ColumnsService{
@@ -32,6 +33,8 @@ public class ColumnsServiceImpl implements ColumnsService{
   public ColumnsResponseDto createColumns(ColumnsRequestDto columnsRequestDto, Long boardId,
       User user) {
     Board board = boardRepository.findById(boardId).orElseThrow(()-> new ApiException(ErrorCode.INVALID_BOARD));
+
+
     List<UserBoard> list = findMember(boardId,user);
     if(list.isEmpty()){
       throw new ApiException(ErrorCode.INVALID_MEMBERS);

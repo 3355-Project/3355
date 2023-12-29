@@ -1,6 +1,7 @@
-package com.example.project3355.comment;
+package com.example.project3355.comment.dto;
 
 
+import com.example.project3355.comment.entity.Comment;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;

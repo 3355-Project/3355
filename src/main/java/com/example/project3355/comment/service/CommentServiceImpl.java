@@ -1,8 +1,12 @@
-package com.example.project3355.comment;
+package com.example.project3355.comment.service;
 
 
 import com.example.project3355.card.entity.Card;
 import com.example.project3355.card.repository.CardRepository;
+import com.example.project3355.comment.repository.CommentRepository;
+import com.example.project3355.comment.dto.CommentRequestDto;
+import com.example.project3355.comment.dto.CommentResponseDto;
+import com.example.project3355.comment.entity.Comment;
 import com.example.project3355.coulmn.service.ColumnsService;
 import com.example.project3355.global.exception.columns.ApiException;
 import com.example.project3355.global.exception.common.ErrorCode;
@@ -20,7 +24,7 @@ public class CommentServiceImpl  implements CommentService {
 
 
   @Override
-  public CommentResponseDto createComment(Long id,CommentRequestDto requestDto, User user) {
+  public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, User user) {
     Card card = findCardId(id);
 //    columnsService.findMember();
     Comment comment = commentRepository.save(new Comment(requestDto,card,user));

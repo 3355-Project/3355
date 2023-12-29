@@ -1,4 +1,4 @@
-package com.example.project3355.comment;
+package com.example.project3355.comment.dto;
 
 
 import lombok.Getter;

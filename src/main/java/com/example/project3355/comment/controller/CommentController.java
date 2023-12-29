@@ -1,10 +1,13 @@
-package com.example.project3355.comment;
+package com.example.project3355.comment.controller;
 
 
 import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COMMENT;
 import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COMMENT_DELETE;
 import static com.example.project3355.global.exception.columns.ResponseCode.SUCCESS_COMMENT_UPDATE;
 
+import com.example.project3355.comment.dto.CommentRequestDto;
+import com.example.project3355.comment.dto.CommentResponseDto;
+import com.example.project3355.comment.service.CommentService;
 import com.example.project3355.global.exception.columns.SuccessResponse;
 import com.example.project3355.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
