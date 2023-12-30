@@ -42,7 +42,7 @@ public class Columns extends Timestamped {
   @JoinColumn(name = "board_id",nullable = false)
   private Board board;
 
-  @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "columns", cascade = CascadeType.REMOVE)
   private List<Card> cardList = new ArrayList<>();
 
 
