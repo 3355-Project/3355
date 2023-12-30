@@ -3,8 +3,12 @@ package com.example.project3355.card.service;
 import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.card.dto.CardResponseDTO;
 import com.example.project3355.card.dto.CardSequenceDTO;
+import com.example.project3355.card.dto.WatchResponseDto;
 import com.example.project3355.card.entity.Card;
+import com.example.project3355.card.entity.Watch;
 import com.example.project3355.card.repository.CardRepository;
+import com.example.project3355.comment.dto.CommentResponseDto;
+import com.example.project3355.comment.entity.Comment;
 import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.coulmn.repository.ColumnsRepository;
 import com.example.project3355.global.exception.columns.ApiException;
@@ -39,7 +43,15 @@ public class CardService {
 
     public CardResponseDTO getCardDto(Long cardId) {
         Card card = getCard(cardId);
-        return new CardResponseDTO(card);
+        List<CommentResponseDto> commentList = new ArrayList<>();
+        List<WatchResponseDto> watchList = new ArrayList<>();
+        for(Comment comment : card.getCommentList()){
+            commentList.add(new CommentResponseDto(comment));
+        }
+        for(Watch watch : card.getWatchList()){
+            watchList.add(new WatchResponseDto(watch));
+        }
+        return new CardResponseDTO(card,commentList,watchList);
     }
 
     public Map<UserInfoResponseDto, List<CardResponseDTO>> getUserCardMap() {

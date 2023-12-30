@@ -1,9 +1,12 @@
 package com.example.project3355.card.dto;
 
 import com.example.project3355.card.entity.Card;
+import com.example.project3355.comment.dto.CommentResponseDto;
 import com.example.project3355.global.common.CommonResponseDto;
 import com.example.project3355.user.dto.UserInfoResponseDto;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 
 import java.util.Optional;
@@ -21,6 +24,8 @@ public class CardResponseDTO extends CommonResponseDto {
     private LocalDateTime deadline;
     private UserInfoResponseDto user;
     private Integer sequence;
+    private List<CommentResponseDto> commentList = new ArrayList<>();
+    private List<WatchResponseDto> watchList = new ArrayList<>();
 
 
     public CardResponseDTO(String msg, Integer statusCode) {
@@ -35,5 +40,14 @@ public class CardResponseDTO extends CommonResponseDto {
         this.deadline = card.getDeadline();
         this.user = new UserInfoResponseDto(card.getUser());
         this.sequence=card.getSequence();
+    }
+
+    public CardResponseDTO(Card card, List<CommentResponseDto> commentList,List<WatchResponseDto> watchList){
+        this.cardTitle=card.getCardTitle();
+        this.cardColor=card.getCardColor();
+        this.cardDescription=card.getCardDescription();
+        this.deadline=card.getDeadline();
+        this.commentList=commentList;
+        this.watchList=watchList;
     }
 }
