@@ -124,8 +124,8 @@ public class CardController {
     }
 
     @PutMapping("{cardId}/{sequence}")
-    public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long id, @PathVariable Integer sequence){
-        cardService.sequenceCard(id,sequence);
+    public ResponseEntity<SuccessResponse> sequenceColumns(@PathVariable Long cardId, @PathVariable Integer sequence){
+        cardService.sequenceCard(cardId,sequence);
         return ResponseEntity.status(SUCCESS_COLUMNS_SEQUENCE.getHttpStatus()).body(new SuccessResponse(SUCCESS_COLUMNS_SEQUENCE));
     }
 
