@@ -23,10 +23,10 @@ public class CardResponseDTO extends CommonResponseDto {
     private String cardDescription;
     private LocalDateTime deadline;
     private UserInfoResponseDto user;
+    private String worker;
     private Integer sequence;
     private List<CommentResponseDto> commentList = new ArrayList<>();
     private List<WatchResponseDto> watchList = new ArrayList<>();
-
 
     public CardResponseDTO(String msg, Integer statusCode) {
         super(msg, statusCode);
@@ -38,6 +38,7 @@ public class CardResponseDTO extends CommonResponseDto {
         this.cardColor = card.getCardColor();
         this.cardDescription = card.getCardDescription();
         this.deadline = card.getDeadline();
+        this.worker = card.setWorker();
         this.user = new UserInfoResponseDto(card.getUser());
         this.sequence=card.getSequence();
     }

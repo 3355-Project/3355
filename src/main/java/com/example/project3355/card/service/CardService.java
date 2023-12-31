@@ -7,6 +7,14 @@ import com.example.project3355.card.dto.WatchResponseDto;
 import com.example.project3355.card.entity.Card;
 import com.example.project3355.card.entity.Watch;
 import com.example.project3355.card.repository.CardRepository;
+import com.example.project3355.global.exception.card.CardAssigneeAuthorizationException;
+import com.example.project3355.global.exception.user.UserNotFoundException;
+import com.example.project3355.user.dto.UserInfoResponseDto;
+import com.example.project3355.user.entity.User;
+import com.example.project3355.user.repository.UserRepository;
+import com.example.project3355.usercard.UserCard;
+import com.example.project3355.usercard.UserCardId;
+import com.example.project3355.usercard.UserCardRepository;
 import com.example.project3355.comment.dto.CommentResponseDto;
 import com.example.project3355.comment.entity.Comment;
 import com.example.project3355.coulmn.entity.Columns;
@@ -30,6 +38,10 @@ public class CardService {
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final ColumnsRepository columnsRepository;
+
+    private final UserRepository userRepository;
+
+    private final UserCardRepository userCardRepository;
 
     public CardResponseDTO createCard(CardRequestDTO dto, User user) {
         Columns columns = columnsRepository.findById(dto.getColumnsId()).orElseThrow(()-> new ApiException(ErrorCode.INVALID_COLUMNS));
@@ -90,6 +102,43 @@ public class CardService {
         cardRepository.delete(card);
     }
 
+    @Transactional
+    public void assignmentWorker(Long workerId, Long cardId, User loginUser) {
+        User worker = getWorker(workerId);
+        Card card = getCard(cardId);
+
+        // 카드 작성자만이 작업자를 할당
+        if (!loginUser.getUsername().equals(card.getUser().getUsername())) {
+            throw new CardAssigneeAuthorizationException();
+        }
+
+        UserCardId userCardId = new UserCardId(workerId, cardId);
+        UserCard userCard = UserCard.builder()
+            .id(userCardId)
+            .user(worker)
+            .card(card)
+            .build();
+
+        userCardRepository.save(userCard);
+    }
+
+    @Transactional
+    public void deleteWorker(Long workerId, Long cardId, User loginUser) {
+        User worker = getWorker(workerId);
+        Card card = getCard(cardId);
+
+        // 카드 작성자만이 작업자를 삭제
+        if (!loginUser.getUsername().equals(card.getUser().getUsername())) {
+            throw new CardAssigneeAuthorizationException();
+        }
+
+        userCardRepository.deleteByCardIdAndUserId(cardId, workerId);
+    }
+
+    private User getWorker(Long newWorkerId) {
+        return userRepository.findById(newWorkerId).orElseThrow(UserNotFoundException::new);
+    }
+
     public Card getCard(Long cardId) {
 
         return cardRepository.findById(cardId)
@@ -131,6 +180,5 @@ public class CardService {
         // 예시: 실제로는 데이터베이스에서 카드를 조회하게 됩니다.
         return cardRepository.findById(id).orElse(null);
     }
-
 
 }
