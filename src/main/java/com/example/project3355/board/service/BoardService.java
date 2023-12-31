@@ -7,9 +7,15 @@ import com.example.project3355.board.entity.Board;
 import com.example.project3355.board.entity.UserBoard;
 import com.example.project3355.board.repository.BoardRepository;
 import com.example.project3355.board.repository.UserBoardRepository;
+import com.example.project3355.card.dto.CardResponseDTO;
+import com.example.project3355.card.entity.Card;
+import com.example.project3355.coulmn.dto.ColumnsResponseDto;
+import com.example.project3355.coulmn.entity.Columns;
+import com.example.project3355.coulmn.repository.ColumnsRepository;
 import com.example.project3355.user.UserDetailsImpl;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.user.repository.UserRepository;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +30,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final UserBoardRepository userBoardRepository;
+    private final ColumnsRepository columnsRepository;
 
     // 생성
     public BoardResponseDto createBoard(BoardRequestDto boardRequestDto, User user) {
@@ -37,7 +44,16 @@ public class BoardService {
 
     // 조회
     public BoardResponseDto getBoard(Long boardId) {
-        return new BoardResponseDto(findBoardById(boardId));
+        List<Columns> columnsList =columnsRepository.findAllByBoardIdOrderBySequence(boardId);
+        List<ColumnsResponseDto> columnsResponseDtoList = new ArrayList<>();
+        List<CardResponseDTO> cardResponseDTOList =new ArrayList<>();
+        for(Columns columns : columnsList){
+            for(Card card : columns.getCardList()){
+                cardResponseDTOList.add(new CardResponseDTO(card));
+            }
+            columnsResponseDtoList.add(new ColumnsResponseDto(columns,cardResponseDTOList));
+        }
+        return new BoardResponseDto(findBoardById(boardId),columnsResponseDtoList);
 
     }
     private Board findBoardById(Long id) {
