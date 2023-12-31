@@ -26,8 +26,6 @@ public class UserBoard {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @Column
-    private String username;
 
 
 

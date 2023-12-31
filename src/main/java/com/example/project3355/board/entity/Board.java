@@ -2,6 +2,7 @@ package com.example.project3355.board.entity;
 
 
 import com.example.project3355.board.dto.BoardRequestDto;
+import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.global.common.Timestamped;
 import com.example.project3355.user.entity.User;
 import jakarta.persistence.*;
@@ -36,6 +37,10 @@ public class Board extends Timestamped {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<UserBoard> userBoardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Columns> columnList = new ArrayList<>();
+
 
 
     public void setUser(User user) {

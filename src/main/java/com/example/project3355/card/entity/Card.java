@@ -1,12 +1,18 @@
 package com.example.project3355.card.entity;
 
 import com.example.project3355.card.dto.CardRequestDTO;
+import com.example.project3355.card.dto.CardSequenceDTO;
+import com.example.project3355.comment.entity.Comment;
+import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
+import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.usercard.UserCard;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +29,8 @@ public class Card implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
+    private Integer sequence;
 
     @Column(nullable = false)
     String cardTitle;
@@ -33,18 +41,30 @@ public class Card implements Serializable {
     @Column(nullable = false)
     String cardDescription;
 
+
     @Column(nullable = false)
     LocalDateTime deadline = LocalDateTime.now();
 
     @Column
     String worker;
 
+  
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "card")
     private Set<UserCard> userCards = new HashSet<>();
+  
+    @ManyToOne
+    @JoinColumn(name = "columns_id", nullable = false)
+    private Columns columns;
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
+    private List<Watch> watchList = new ArrayList<>();
 
     @Builder
     public Card(String cardTitle, String cardColor , String cardDescription) {
@@ -53,11 +73,16 @@ public class Card implements Serializable {
         this.cardDescription = cardDescription;
     }
 
-    public Card(CardRequestDTO dto) {
+    public Card(CardRequestDTO dto,Columns columns) {
         this.cardTitle = dto.getCardTitle();
         this.cardColor = dto.getCardColor();
         this.cardDescription = dto.getCardDescription();
         this.deadline = dto.getDeadline();
+        this.columns=columns;
+    }
+
+    public void addSequence(CardSequenceDTO sequenceDto){
+        this.sequence= sequenceDto.getSequence();
     }
 
     public String setWorker() {
@@ -83,4 +108,5 @@ public class Card implements Serializable {
         }
         return worker;
     }
+
 }
