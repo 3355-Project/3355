@@ -2,6 +2,10 @@ package com.example.project3355.board.dto;
 
 
 import com.example.project3355.board.entity.Board;
+import com.example.project3355.card.dto.CardResponseDTO;
+import com.example.project3355.coulmn.dto.ColumnsResponseDto;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +21,7 @@ public class BoardResponseDto {
     private String boardDescription;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private List<ColumnsResponseDto> columnsList =new ArrayList<>();
 
 
     public BoardResponseDto(Board board) {
@@ -27,6 +32,17 @@ public class BoardResponseDto {
         this.boardDescription = board.getBoardDescription();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
+    }
+
+    public BoardResponseDto(Board board,List<ColumnsResponseDto> columnsList){
+        this.boardId = board.getId();
+        this.boardTitle=board.getBoardTitle();
+        this.user_id = board.getUser().getUsername();
+        this.boardColor=board.getBoardColor();
+        this.boardDescription=board.getBoardDescription();
+        this.createdAt = board.getCreatedAt();
+        this.modifiedAt = board.getModifiedAt();
+        this.columnsList = columnsList;
     }
 
 
