@@ -21,7 +21,6 @@ public class Board extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private String boardTitle;
 
@@ -42,10 +41,10 @@ public class Board extends Timestamped {
     private List<Columns> columnList = new ArrayList<>();
 
 
-
     public void setUser(User user) {
         this.user = user;
     }
+
     public Board(BoardRequestDto requestDto, User user) {
         this.user = user;
         this.boardTitle = requestDto.getBoardTitle();

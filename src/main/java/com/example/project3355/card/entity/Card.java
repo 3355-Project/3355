@@ -5,6 +5,7 @@ import com.example.project3355.card.dto.CardSequenceDTO;
 import com.example.project3355.comment.entity.Comment;
 import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.coulmn.entity.Columns;
+import com.example.project3355.global.common.Timestamped;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.usercard.UserCard;
 import jakarta.persistence.*;
@@ -24,7 +25,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @NoArgsConstructor
-public class Card implements Serializable {
+public class Card extends Timestamped implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +49,6 @@ public class Card implements Serializable {
     @Column
     String worker;
 
-  
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

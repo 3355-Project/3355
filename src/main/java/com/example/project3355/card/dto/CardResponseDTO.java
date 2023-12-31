@@ -25,6 +25,8 @@ public class CardResponseDTO extends CommonResponseDto {
     private UserInfoResponseDto user;
     private String worker;
     private Integer sequence;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private List<CommentResponseDto> commentList = new ArrayList<>();
     private List<WatchResponseDto> watchList = new ArrayList<>();
 
@@ -44,11 +46,16 @@ public class CardResponseDTO extends CommonResponseDto {
     }
 
     public CardResponseDTO(Card card, List<CommentResponseDto> commentList,List<WatchResponseDto> watchList){
+        this.id = card.getId();
         this.cardTitle=card.getCardTitle();
         this.cardColor=card.getCardColor();
         this.cardDescription=card.getCardDescription();
         this.deadline=card.getDeadline();
+        this.sequence=card.getSequence();
+        this.worker = card.setWorker();
         this.commentList=commentList;
         this.watchList=watchList;
+        this.createdAt = card.getCreatedAt();
+        this.modifiedAt = card.getModifiedAt();
     }
 }
