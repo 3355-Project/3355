@@ -24,8 +24,8 @@ public class CommentServiceImpl  implements CommentService {
 
 
   @Override
-  public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, User user) {
-    Card card = findCardId(id);
+  public CommentResponseDto createComment(Long cardId, CommentRequestDto requestDto, User user) {
+    Card card = findCardId(cardId);
     columnsService.findMember(card.getColumns().getBoard().getId(),user);
     Comment comment = commentRepository.save(new Comment(requestDto,card,user));
     return new CommentResponseDto(comment);

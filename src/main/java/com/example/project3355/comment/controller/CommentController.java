@@ -28,11 +28,11 @@ public class CommentController {
   private final CommentService commentService;
 
 
-  @PostMapping("{id}/comment")
-  public ResponseEntity<SuccessResponse> createComment(@PathVariable Long id,
+  @PostMapping("{cardId}/comment")
+  public ResponseEntity<SuccessResponse> createComment(@PathVariable Long cardId,
       @RequestBody CommentRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    CommentResponseDto responseDto = commentService.createComment(id,requestDto,userDetails.getUser());
+    CommentResponseDto responseDto = commentService.createComment(cardId,requestDto,userDetails.getUser());
     return ResponseEntity.status(SUCCESS_COMMENT.getHttpStatus()).body(new SuccessResponse(SUCCESS_COMMENT,responseDto));
   }
 
