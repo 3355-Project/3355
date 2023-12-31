@@ -5,12 +5,15 @@ import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.card.dto.CardResponseDTO;
 import com.example.project3355.card.service.CardService;
 import com.example.project3355.global.common.CommonResponseDto;
+import com.example.project3355.global.exception.common.BusinessException;
 import com.example.project3355.user.UserDetailsImpl;
 import com.example.project3355.user.dto.UserInfoResponseDto;
+import com.example.project3355.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -77,4 +80,42 @@ public class CardController {
             return ResponseEntity.badRequest().body(new CommonResponseDto(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
+
+    // 작업자 할당
+    @PostMapping("/{cardId}/worker/{workerId}")
+    public ResponseEntity<?> assignmentWorker(
+        @PathVariable Long workerId, @PathVariable Long cardId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        User loginUser = userDetails.getUser();
+
+        try {
+            cardService.assignmentWorker(workerId, cardId, loginUser);
+            return ResponseEntity.ok()
+                .body(new CommonResponseDto("작업자로 할당되었습니다.", HttpStatus.OK.value()));
+        } catch (BusinessException be) {
+            return ResponseEntity.status(be.getStatus())
+                .body(new CommonResponseDto(be.getMessage(), be.getStatus()));
+        }
+
+    }
+
+    // 작업자 삭제
+    @DeleteMapping("/{cardId}/worker/{workerId}")
+    public ResponseEntity<?> deleteWorker(
+        @PathVariable Long workerId, @PathVariable Long cardId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        User loginUser = userDetails.getUser();
+
+        try {
+            cardService.deleteWorker(workerId, cardId, loginUser);
+            return ResponseEntity.ok()
+                .body(new CommonResponseDto("작업자가 삭제되었습니다.", HttpStatus.OK.value()));
+        } catch (BusinessException be) {
+            return ResponseEntity.status(be.getStatus())
+                .body(new CommonResponseDto(be.getMessage(), be.getStatus()));
+        }
+    }
+
 }

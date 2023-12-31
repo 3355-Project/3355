@@ -2,8 +2,11 @@ package com.example.project3355.card.entity;
 
 import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.user.entity.User;
+import com.example.project3355.usercard.UserCard;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,11 +36,15 @@ public class Card implements Serializable {
     @Column(nullable = false)
     LocalDateTime deadline = LocalDateTime.now();
 
+    @Column
+    String worker;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // TODO: 작업자
+    @OneToMany(mappedBy = "card")
+    private Set<UserCard> userCards = new HashSet<>();
 
     @Builder
     public Card(String cardTitle, String cardColor , String cardDescription) {
@@ -51,5 +58,29 @@ public class Card implements Serializable {
         this.cardColor = dto.getCardColor();
         this.cardDescription = dto.getCardDescription();
         this.deadline = dto.getDeadline();
+    }
+
+    public String setWorker() {
+        if (userCards != null && !userCards.isEmpty()) {
+            // 여러 개의 username을 저장할 StringBuilder 초기화
+            StringBuilder stringBuilder = new StringBuilder();
+
+            // 각 UserCard를 반복하며 username을 StringBuilder에 추가
+            for (UserCard userCard : userCards) {
+                User worker = userCard.getUser();
+                if (worker != null) {
+                    stringBuilder.append(worker.getUsername()).append(", ");
+                }
+            }
+
+            // 마지막의 쉼표와 공백 제거
+            if (stringBuilder.length() > 0) {
+                stringBuilder.setLength(stringBuilder.length() - 2);
+            }
+
+            // StringBuilder에 저장된 값을 worker 필드에 설정
+            this.worker = stringBuilder.toString();
+        }
+        return worker;
     }
 }
