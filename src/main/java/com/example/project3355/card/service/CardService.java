@@ -21,14 +21,15 @@ import com.example.project3355.user.repository.UserRepository;
 import com.example.project3355.usercard.UserCard;
 import com.example.project3355.usercard.UserCardId;
 import com.example.project3355.usercard.UserCardRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +43,8 @@ public class CardService {
 
   private final UserCardRepository userCardRepository;
 
-  public CardResponseDTO createCard(CardRequestDTO dto, User user) {
+
+  public CardResponseDTO createCard(CardRequestDTO dto, User user, Long columnId) {
     Columns columns = columnsRepository.findById(dto.getColumnsId())
         .orElseThrow(() -> new ApiException(ErrorCode.INVALID_COLUMNS));
     Card card = new Card(dto, columns);
@@ -50,7 +52,11 @@ public class CardService {
 
     var saved = cardRepository.save(card);
 
-    return new CardResponseDTO(saved);
+    CardSequenceDTO sequenceDto = new CardSequenceDTO(cardRepository.countByColumnsId(columnId).intValue()+1);
+//    Card card = new Card(CardRequestDTO,columns);
+    card.addSequence(sequenceDto);
+    Card saveCard = cardRepository.save(card);
+    return new CardResponseDTO(saveCard);
   }
 
   public CardResponseDTO getCardDto(Long cardId) {
@@ -165,13 +171,9 @@ public class CardService {
   public void sequenceCard(Long id, Integer sequence) {
     Card card = findById(id);
 
-    if (card.getSequence().equals(sequence)) {
-      throw new ApiException(ErrorCode.INVALID_CARD_SEQUENCE);
-    } else {
-      // cardList를 사용하지 않고, 단일 카드에 대해서만 처리
+
       CardSequenceDTO sequenceDto = new CardSequenceDTO(sequence);
       card.addSequence(sequenceDto);
-    }
   }
 
   // findById 메서드 정의

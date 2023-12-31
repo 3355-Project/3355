@@ -36,7 +36,7 @@ public class CardController {
     // 카드 생성
     @PostMapping
     public ResponseEntity<CardResponseDTO> postCard(@RequestBody CardRequestDTO cardRequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        CardResponseDTO responseDTO = cardService.createCard(cardRequestDTO, userDetails.getUser());
+        CardResponseDTO responseDTO = cardService.createCard(cardRequestDTO, userDetails.getUser(), cardRequestDTO.getColumnsId());
 
         return ResponseEntity.ok(responseDTO);
     }

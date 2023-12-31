@@ -3,23 +3,22 @@ package com.example.project3355.card.entity;
 import com.example.project3355.card.dto.CardRequestDTO;
 import com.example.project3355.card.dto.CardSequenceDTO;
 import com.example.project3355.comment.entity.Comment;
-import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.coulmn.entity.Columns;
 import com.example.project3355.global.common.Timestamped;
 import com.example.project3355.user.entity.User;
 import com.example.project3355.usercard.UserCard;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,7 +29,7 @@ public class Card extends Timestamped implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(nullable = false)
     private Integer sequence;
 
     @Column(nullable = false)
