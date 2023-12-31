@@ -96,8 +96,12 @@ public class ColumnsServiceImpl implements ColumnsService{
   public void sequenceColumns(Long id, Integer sequence,User user) {
     Columns columns = findId(id);
     List<UserBoard> list = findMember(columns.getBoard().getId(),user);
+    Long countSequence = columnsRepository.countByBoardId(columns.getBoard().getId());
     if(list.isEmpty()){
       throw new ApiException(ErrorCode.INVALID_MEMBERS);
+    }
+    if(countSequence.intValue()<sequence){
+      throw new ApiException(ErrorCode.INVALID_SEQUENCE);
     }
 
     if(columns.getSequence().equals(sequence)){
