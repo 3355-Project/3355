@@ -53,6 +53,7 @@ public class CardResponseDTO extends CommonResponseDto {
         this.deadline=card.getDeadline();
         this.sequence=card.getSequence();
         this.worker = card.setWorker();
+        this.sequence =card.getSequence();
         this.commentList=commentList;
         this.watchList=watchList;
         this.createdAt = card.getCreatedAt();

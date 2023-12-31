@@ -5,21 +5,22 @@ import com.example.project3355.board.entity.Board;
 import com.example.project3355.board.entity.UserBoard;
 import com.example.project3355.board.repository.BoardRepository;
 import com.example.project3355.board.repository.UserBoardRepository;
-import com.example.project3355.coulmn.repository.ColumnsRepository;
 import com.example.project3355.coulmn.dto.ColumnsRequestDto;
 import com.example.project3355.coulmn.dto.ColumnsResponseDto;
 import com.example.project3355.coulmn.dto.ColumnsSequenceDto;
 import com.example.project3355.coulmn.entity.Columns;
+import com.example.project3355.coulmn.repository.ColumnsRepository;
 import com.example.project3355.global.exception.columns.ApiException;
 import com.example.project3355.global.exception.common.ErrorCode;
 import com.example.project3355.user.entity.User;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
