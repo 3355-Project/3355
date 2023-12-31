@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class WatchController {
   private final WatchService watchService;
 
-  @PostMapping("/{id}/watch")
-  public ResponseEntity<SuccessResponse> createWatch(@PathVariable Long id,
+  @PostMapping("/{cardId}/watch")
+  public ResponseEntity<SuccessResponse> createWatch(@PathVariable Long cardId,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    watchService.createWatch(id,userDetails.getUser());
+    watchService.createWatch(cardId,userDetails.getUser());
     return ResponseEntity.status(SUCCESS_WATCH.getHttpStatus()).body(new SuccessResponse(SUCCESS_WATCH));
   }
   @DeleteMapping("/watch/{id}")

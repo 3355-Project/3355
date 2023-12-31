@@ -19,8 +19,8 @@ public class WatchServiceImpl implements WatchService {
   private final ColumnsService columnsService;
 
   @Override
-  public void createWatch(Long id, User user) {
-    Card card = cardRepository.findById(id).orElseThrow(()-> new ApiException(ErrorCode.INVALID_CARD));
+  public void createWatch(Long cardId, User user) {
+    Card card = cardRepository.findById(cardId).orElseThrow(()-> new ApiException(ErrorCode.INVALID_CARD));
     columnsService.findMember(card.getColumns().getBoard().getId(),user);
     if(!watchRepository.existsByCardIdAndUserId(card.getId(), user.getId())){
       Watch watch = new Watch(card,user);
