@@ -50,10 +50,8 @@ public class CardService {
     Card card = new Card(dto, columns);
     card.setUser(user);
 
-    var saved = cardRepository.save(card);
 
     CardSequenceDTO sequenceDto = new CardSequenceDTO(cardRepository.countByColumnsId(columnId).intValue()+1);
-//    Card card = new Card(CardRequestDTO,columns);
     card.addSequence(sequenceDto);
     Card saveCard = cardRepository.save(card);
     return new CardResponseDTO(saveCard);
