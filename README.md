@@ -47,7 +47,7 @@
 ![image](https://github.com/3355-Project/3355/assets/134623719/f810abfe-7ad7-496f-817f-99424f01a0dc)
 
 
-#API명세
+# API명세
 ### USER
 ![image](https://github.com/3355-Project/3355/assets/134623719/1396d56d-22c0-4417-b624-5f46d094f74a)
 
